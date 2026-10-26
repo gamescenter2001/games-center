@@ -47,6 +47,61 @@
         }
     </script>
 
+
+
+
+<style>
+    /* تنسيق القائمة المنسدلة للهاتف */
+    .mobile-menu-container {
+        position: relative;
+        display: inline-block;
+    }
+    .menu-toggle-btn {
+        background: linear-gradient(135deg, #00c6ff, #0072ff);
+        color: white;
+        border: none;
+        padding: 10px 18px;
+        border-radius: 8px;
+        font-size: 16px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .dropdown-menu {
+        display: none;
+        position: absolute;
+        right: 0;
+        top: 45px;
+        background-color: #1a1f2c;
+        min-width: 180px;
+        box-shadow: 0px 8px 16px rgba(0,0,0,0.3);
+        border-radius: 8px;
+        z-index: 1000;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .dropdown-menu a {
+        color: white;
+        padding: 12px 16px;
+        text-decoration: none;
+        display: block;
+        text-align: right;
+    }
+    .dropdown-menu a:hover {
+        background-color: rgba(0, 198, 255, 0.2);
+        border-radius: 6px;
+    }
+    .dropdown-menu.show {
+        display: block;
+    }
+</style>
+
+
+
+
+
+
+
     <style>
 
 body {
