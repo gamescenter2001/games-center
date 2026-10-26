@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>حاسبة عنق الزجاجة وفحص توافق قطع الكمبيوتر | PC Bottleneck & Compatibility Checker</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts (Cairo & Tajawal) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Tajawal:wght@500;700;800&display=swap" rel="stylesheet">
+    
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Chart.js for Performance Visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#0b0f19',
+                        panelBg: '#131b2e',
+                        panelBorder: '#1f2b48',
+                        neonGreen: '#00ff88',
+                        neonCyan: '#00e5ff',
+                        neonRed: '#ff2a6d',
+                        neonYellow: '#ffe600',
+                    },
+                    fontFamily: {
+                        cairo: ['Cairo', 'sans-serif'],
+                        tajawal: ['Tajawal', 'sans-serif'],
+                    },
+                    boxShadow: {
+                        'neon-green': '0 0 20px rgba(0, 255, 136, 0.35)',
+                        'neon-cyan': '0 0 20px rgba(0, 229, 255, 0.35)',
+                        'neon-red': '0 0 20px rgba(255, 42, 109, 0.35)',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+
+body {
+    background-image: linear-gradient(rgba(18, 18, 18, 0.8), rgba(18, 18, 18, 0.85)), url('images/x.jpg');
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: scroll; /* ممتاز ومريح جداً للهواتف والكمبيوتر */
+    background-color: #0d0e12;
+}
+
+
+
+
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #0b0f19;
+            color: #f1f5f9;
+            overflow-x: hidden;
+        }
+        
+        /* Custom Glowing Elements */
+        .glow-text-cyan {
+            text-shadow: 0 0 10px rgba(0, 229, 255, 0.6);
+        }
+        .glow-text-green {
+            text-shadow: 0 0 10px rgba(0, 255, 136, 0.6);
+        }
+        .glow-border {
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.2);
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0b0f19;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1f2b48;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00e5ff;
+        }
+
+        /* Speedometer Gauge Styles */
+        .gauge-cover {
+            transform: rotate(-90deg);
+            transform-origin: center;
+        }
+
+        /* Glassmorphism */
+        .glass-panel {
+            background: rgba(19, 27, 46, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(31, 43, 72, 0.8);
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between selection:bg-neonCyan selection:text-black">
+
+    <!-- Toast Notification -->
+    <div id="toast" class="fixed bottom-6 left-6 z-50 transform translate-y-32 opacity-0 transition-all duration-300 ease-out bg-panelBg border border-neonCyan text-white px-5 py-3 rounded-xl shadow-neon-cyan flex items-center space-x-3 space-x-reverse">
+        <i id="toastIcon" class="fa-solid fa-circle-check text-neonCyan text-xl"></i>
+        <span id="toastMsg" class="font-semibold text-sm">تم نسخ التقرير بنجاح!</span>
+    </div>
+
+    <!-- Top Header Banner -->
+    <header class="sticky top-0 z-40 glass-panel border-b border-panelBorder shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <!-- Logo -->
+            <div class="flex items-center space-x-3 space-x-reverse cursor-pointer" onclick="window.scrollTo({top: 0, behavior: 'smooth'});">
+                <div class="w-12 h-12 rounded-xl bg-gradient-to-tr from-cyan-600 to-emerald-400 flex items-center justify-center shadow-neon-cyan">
+                    <i class="fa-solid fa-microchip text-2xl text-black"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl sm:text-2xl font-black tracking-wide text-white font-tajawal">
+                        GAMES <span class="text-neonCyan">CEN</span><span class="text-neonGreen">TER</span>
+                    </h1>
+                    <p class="text-xs text-gray-400 font-semibold">حاسبة عنق الزجاجة وتوافق العتاد المتقدمة</p>
+                </div>
+            </div>
+
+            <!-- Header Actions -->
+
+<a href="games.html" class="hidden sm:flex items-center gap-2 bg-panelBg border border-neonGreen/40 hover:border-neonGreen text-xs text-neonGreen px-3 py-2 rounded-lg transition-all font-bold">
+                    <i class="fa-solid fa-gamepad"></i> تحميل الالعاب
+                </a>
+
+            <div class="flex items-center space-x-3 space-x-reverse">
+                <button id="presetHighEnd" class="hidden sm:flex items-center gap-2 bg-panelBg border border-neonCyan/40 hover:border-neonCyan text-xs text-neonCyan px-3 py-2 rounded-lg transition-all">
+                    <i class="fa-solid fa-bolt"></i> تجميعة قوية
+                </button>
+                <button id="presetBudget" class="hidden sm:flex items-center gap-2 bg-panelBg border border-neonGreen/40 hover:border-neonGreen text-xs text-neonGreen px-3 py-2 rounded-lg transition-all">
+                    <i class="fa-solid fa-wallet"></i> تجميعة الاقتصادية
+                </button>
+                <button id="btnShare" class="bg-gradient-to-r from-neonCyan to-cyan-600 hover:from-cyan-400 hover:to-neonCyan text-black font-bold text-xs sm:text-sm px-4 py-2.5 rounded-xl shadow-neon-cyan transition-all flex items-center gap-2">
+                    <i class="fa-solid fa-share-nodes"></i> مشاركة النتيجة
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+
+        <!-- Intro Banner -->
+        <div class="glass-panel p-6 sm:p-8 rounded-2xl mb-8 border border-panelBorder relative overflow-hidden">
+            <div class="absolute -left-10 -bottom-10 w-48 h-48 bg-neonCyan/10 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -right-10 -top-10 w-48 h-48 bg-neonGreen/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="relative z-10 flex flex-col lg:flex-row items-center justify-between gap-6">
+                <div class="text-right max-w-2xl">
+                    <span class="bg-neonCyan/10 text-neonCyan border border-neonCyan/30 text-xs px-3 py-1 rounded-full font-bold inline-block mb-3">
+                        <i class="fa-solid fa-wand-magic-sparkles ml-1"></i> الإصدار الاحترافي 2026
+                    </span>
+                    <h2 class="text-2xl sm:text-4xl font-black text-white font-tajawal mb-3 leading-tight">
+                        اكتشف قوة تجميعتك وتخلص من <span class="text-transparent bg-clip-text bg-gradient-to-l from-neonCyan via-emerald-400 to-neonGreen">عنق الزجاجة</span>
+                    </h2>
+                    <p class="text-gray-300 text-sm sm:text-base leading-relaxed">
+                        اختر معالجك وكرت الشاشة ودقة الشاشة لتحصل على تحليل دقيق لنسبة عنق الزجاجة، استهلاك الطاقة، أداء الإطارات (FPS)، وتوافق القطع بالكامل مع توصيات التحديث المستقبلي.
+                    </p>
+                </div>
+                <div class="flex flex-wrap gap-4 items-center justify-center">
+                    <div class="bg-panelBg/80 p-4 rounded-xl border border-panelBorder text-center min-w-[130px]">
+                        <span class="block text-2xl font-black text-neonCyan font-tajawal" id="statCpuCount">0</span>
+                        <span class="text-xs text-gray-400">معالج معرف</span>
+                    </div>
+                    <div class="bg-panelBg/80 p-4 rounded-xl border border-panelBorder text-center min-w-[130px]">
+                        <span class="block text-2xl font-black text-neonGreen font-tajawal" id="statGpuCount">0</span>
+                        <span class="text-xs text-gray-400">كرت شاشة معرف</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Calculator & Setup Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
+            
+            <!-- Left Side: Controls & Selector (5 Cols) -->
+            <div class="lg:col-span-5 flex flex-col space-y-6">
+                
+                <div class="glass-panel p-6 rounded-2xl border border-panelBorder shadow-xl relative">
+                    <h3 class="text-lg font-bold text-white mb-6 flex items-center gap-2 border-b border-panelBorder pb-4">
+                        <i class="fa-solid fa-sliders text-neonCyan"></i>
+                        <span>تحديد مواصفات التجميعة</span>
+                    </h3>
+
+                    <form id="calcForm" onsubmit="return false;" class="space-y-5">
+                        
+                        <!-- CPU Selection -->
+                        <div>
+                            <label class="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-2 flex justify-between">
+                                <span><i class="fa-solid fa-microchip text-neonCyan ml-1"></i> المعالج المركزى (CPU)</span>
+                                <span id="cpuScoreTag" class="text-neonCyan font-mono">--</span>
+                            </label>
+                            <div class="relative">
+                                <select id="cpuSelect" class="w-full bg-darkBg border border-panelBorder rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-neonCyan transition-all appearance-none cursor-pointer">
+                                    <option value="" disabled selected>اختر المعالج...</option>
+                                </select>
+                                <div class="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                                    <i class="fa-solid fa-chevron-down text-xs"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- GPU Selection -->
+                        <div>
+                            <label class="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-2 flex justify-between">
+                                <span><i class="fa-solid fa-display text-neonGreen ml-1"></i> كرت الشاشة (GPU)</span>
+                                <span id="gpuScoreTag" class="text-neonGreen font-mono">--</span>
+                            </label>
+                            <div class="relative">
+                                <select id="gpuSelect" class="w-full bg-darkBg border border-panelBorder rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-neonGreen transition-all appearance-none cursor-pointer">
+                                    <option value="" disabled selected>اختر كرت الشاشة...</option>
+                                </select>
+                                <div class="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                                    <i class="fa-solid fa-chevron-down text-xs"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Resolution -->
+                        <div>
+                            <label class="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-2">
+                                <i class="fa-solid fa-expand text-neonYellow ml-1"></i> دقة الشاشة (Resolution)
+                            </label>
+                            <div class="grid grid-cols-3 gap-2">
+                                <button type="button" data-res="1080p" class="res-btn active bg-neonCyan text-black font-bold py-2.5 rounded-xl text-xs transition-all border border-neonCyan">
+                                    1080p (FHD)
+                                </button>
+                                <button type="button" data-res="1440p" class="res-btn bg-darkBg border border-panelBorder text-gray-300 hover:border-gray-500 font-bold py-2.5 rounded-xl text-xs transition-all">
+                                    1440p (2K)
+                                </button>
+                                <button type="button" data-res="4k" class="res-btn bg-darkBg border border-panelBorder text-gray-300 hover:border-gray-500 font-bold py-2.5 rounded-xl text-xs transition-all">
+                                    4K (Ultra HD)
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- RAM Capacity -->
+                        <div>
+                            <label class="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-2">
+                                <i class="fa-solid fa-memory text-purple-400 ml-1"></i> سعة ذاكرة الرام (RAM)
+                            </label>
+                            <div class="grid grid-cols-4 gap-2">
+                                <button type="button" data-ram="8" class="ram-btn bg-darkBg border border-panelBorder text-gray-300 hover:border-gray-500 font-bold py-2 rounded-xl text-xs transition-all">
+                                    8 GB
+                                </button>
+                                <button type="button" data-ram="16" class="ram-btn active bg-neonCyan text-black font-bold py-2 rounded-xl text-xs transition-all border border-neonCyan">
+                                    16 GB
+                                </button>
+                                <button type="button" data-ram="32" class="ram-btn bg-darkBg border border-panelBorder text-gray-300 hover:border-gray-500 font-bold py-2 rounded-xl text-xs transition-all">
+                                    32 GB
+                                </button>
+                                <button type="button" data-ram="64" class="ram-btn bg-darkBg border border-panelBorder text-gray-300 hover:border-gray-500 font-bold py-2 rounded-xl text-xs transition-all">
+                                    64 GB
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Target Usage -->
+                        <div>
+                            <label class="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-2">
+                                <i class="fa-solid fa-gamepad text-pink-500 ml-1"></i> الاستخدام الأساسي
+                            </label>
+                            <select id="usageSelect" class="w-full bg-darkBg border border-panelBorder rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-neonCyan transition-all appearance-none cursor-pointer">
+                                <option value="gaming">ألعاب متقدمة (Pure Gaming)</option>
+                                <option value="streaming">ألعاب مع بث مباشر (Gaming & Streaming)</option>
+                                <option value="rendering">مونتاج وصناعة محتوى (Video Editing / 3D)</option>
+                                <option value="general">استخدام مكتبي وتصفح عام</option>
+                            </select>
+                        </div>
+
+                        <!-- Action Button -->
+                        <button id="btnCalculate" type="button" class="w-full bg-gradient-to-r from-neonCyan via-teal-400 to-neonGreen hover:from-cyan-400 hover:to-emerald-400 text-black font-black text-base py-4 rounded-xl shadow-neon-cyan transition-all transform hover:-translate-y-0.5 active:translate-y-0 flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-calculator text-lg"></i>
+                            <span>احسب النسبة والتوافق الآن</span>
+                        </button>
+
+                    </form>
+                </div>
+
+            </div>
+
+            <!-- Right Side: Dashboard & Results (7 Cols) -->
+            <div class="lg:col-span-7 flex flex-col space-y-6">
+
+                <!-- Bottleneck Gauge Card -->
+                <div class="glass-panel p-6 sm:p-8 rounded-2xl border border-panelBorder shadow-xl relative overflow-hidden flex flex-col justify-between">
+                    
+                    <div class="flex items-center justify-between border-b border-panelBorder pb-4 mb-6">
+                        <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-gauge-high text-neonCyan"></i>
+                            <span>نتيجة مؤشر عنق الزجاجة (Bottleneck Level)</span>
+                        </h3>
+                        <span id="resolutionBadge" class="bg-panelBg text-neonCyan border border-neonCyan/30 text-xs px-3 py-1 rounded-full font-bold">
+                            1080p FHD
+                        </span>
+                    </div>
+
+                    <div class="flex flex-col md:flex-row items-center justify-around gap-6 my-2">
+                        
+                        <!-- SVG Speedometer Gauge -->
+                        <div class="relative w-48 h-48 flex items-center justify-center">
+                            <svg class="w-full h-full" viewBox="0 0 100 100">
+                                <!-- Background Track -->
+                                <circle cx="50" cy="50" r="42" fill="transparent" stroke="#1f2b48" stroke-width="10" stroke-dasharray="264" stroke-dashoffset="66" class="gauge-cover" stroke-linecap="round" />
+                                <!-- Value Circle -->
+                                <circle id="gaugeCircle" cx="50" cy="50" r="42" fill="transparent" stroke="#00e5ff" stroke-width="10" stroke-dasharray="264" stroke-dashoffset="264" class="gauge-cover transition-all duration-1000 ease-out" stroke-linecap="round" />
+                            </svg>
+                            <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+                                <span id="bottleneckPercent" class="text-4xl font-black text-white font-tajawal tracking-tight">0%</span>
+                                <span id="bottleneckStatus" class="text-xs font-bold text-neonGreen mt-1">متوازن جداً</span>
+                            </div>
+                        </div>
+
+                        <!-- Diagnostic Summary -->
+                        <div class="flex-1 space-y-3 text-right w-full">
+                            <div class="bg-darkBg/70 p-4 rounded-xl border border-panelBorder">
+                                <span class="text-xs text-gray-400 block mb-1">الطرف المسبب للتقييد:</span>
+                                <div id="bottleneckLimiter" class="text-base font-bold text-white flex items-center gap-2">
+                                    <i class="fa-solid fa-check-circle text-neonGreen"></i>
+                                    <span>لا يوجد عنق زجاجة ملموس</span>
+                                </div>
+                            </div>
+
+                            <p id="bottleneckDesc" class="text-xs text-gray-300 leading-relaxed bg-panelBg/40 p-3.5 rounded-xl border border-panelBorder/50">
+                                التجميعة متناسقة بشكل ممتاز جداً. المعالج وكرت الشاشة يعملان بتناغم عالٍ دون أن يقيد أحدهما أداء الآخر في الدقة المختارة.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Visual Indicator Levels Bar -->
+                    <div class="mt-6 pt-4 border-t border-panelBorder grid grid-cols-3 gap-2 text-center text-xs">
+                        <div class="p-2 rounded-lg bg-emerald-950/40 border border-emerald-500/30 text-emerald-400 font-semibold">
+                            ممتاز (&lt; 10%)
+                        </div>
+                        <div class="p-2 rounded-lg bg-amber-950/40 border border-amber-500/30 text-amber-400 font-semibold">
+                            متوسط (10% - 20%)
+                        </div>
+                        <div class="p-2 rounded-lg bg-rose-950/40 border border-rose-500/30 text-rose-400 font-semibold">
+                            عالي (&gt; 20%)
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Tabs: FPS Benchmarks & Compatibility -->
+                <div class="glass-panel rounded-2xl border border-panelBorder shadow-xl overflow-hidden">
+                    
+                    <!-- Tab Buttons Header -->
+                    <div class="flex border-b border-panelBorder bg-darkBg/60">
+                        <button id="tabBtnFps" class="flex-1 py-3.5 px-4 text-xs sm:text-sm font-bold text-neonCyan border-b-2 border-neonCyan transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-gamepad"></i>
+                            <span>معدل الإطارات المتوقع (FPS)</span>
+                        </button>
+                        <button id="tabBtnCompat" class="flex-1 py-3.5 px-4 text-xs sm:text-sm font-bold text-gray-400 hover:text-white transition-all flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-shield-halved"></i>
+                            <span>فحص التوافق والطاقة</span>
+                        </button>
+                    </div>
+
+                    <!-- Tab Content Container -->
+                    <div class="p-6">
+                        
+                        <!-- TAB 1: FPS Benchmarks -->
+                        <div id="tabContentFps" class="space-y-6">
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                <!-- FPS Card 1 -->
+                                <div class="bg-darkBg p-4 rounded-xl border border-panelBorder text-center">
+                                    <i class="fa-solid fa-crosshair text-neonCyan text-xl mb-2"></i>
+                                    <span class="block text-xs text-gray-400 mb-1">ألعاب التنافس والمواجهات (eSports)</span>
+                                    <span id="fpsEsports" class="text-2xl font-black text-white font-tajawal">-- FPS</span>
+                                    <span class="block text-[10px] text-gray-500 mt-1">مثال: CS2, Valorant, Apex</span>
+                                </div>
+                                <!-- FPS Card 2 -->
+                                <div class="bg-darkBg p-4 rounded-xl border border-panelBorder text-center">
+                                    <i class="fa-solid fa-mountain-sun text-neonGreen text-xl mb-2"></i>
+                                    <span class="block text-xs text-gray-400 mb-1">ألعاب العالم المفتوح (AAA)</span>
+                                    <span id="fpsAAA" class="text-2xl font-black text-white font-tajawal">-- FPS</span>
+                                    <span class="block text-[10px] text-gray-500 mt-1">مثال: GTA V, Cyberpunk, Witcher</span>
+                                </div>
+                                <!-- FPS Card 3 -->
+                                <div class="bg-darkBg p-4 rounded-xl border border-panelBorder text-center">
+                                    <i class="fa-solid fa-wand-magic text-neonYellow text-xl mb-2"></i>
+                                    <span class="block text-xs text-gray-400 mb-1">ألعاب محرك تتبع الأشعة (Ray Tracing)</span>
+                                    <span id="fpsRayTracing" class="text-2xl font-black text-white font-tajawal">-- FPS</span>
+                                    <span class="block text-[10px] text-gray-500 mt-1">إعدادات مرتفعة Ultra</span>
+                                </div>
+                            </div>
+
+                            <!-- FPS Bar Chart -->
+                            <div class="bg-darkBg/60 p-4 rounded-xl border border-panelBorder">
+                                <h4 class="text-xs font-bold text-gray-300 mb-3 flex items-center gap-2">
+                                    <i class="fa-solid fa-chart-simple text-neonCyan"></i>
+                                    <span>مقارنة أداء الإطارات عبر الدقات المختلفة</span>
+                                </h4>
+                                <div class="h-48 relative">
+                                    <canvas id="fpsChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- TAB 2: Hardware Compatibility Check -->
+                        <div id="tabContentCompat" class="hidden space-y-4">
+                            
+                            <!-- PSU Recommendation -->
+                            <div class="bg-darkBg p-4 rounded-xl border border-panelBorder flex items-center justify-between">
+                                <div class="flex items-center space-x-3 space-x-reverse">
+                                    <div class="w-10 h-10 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400">
+                                        <i class="fa-solid fa-plug text-lg"></i>
+                                    </div>
+                                    <div>
+                                        <span class="block text-xs text-gray-400">مزود الطاقة المقترح (PSU Wattage)</span>
+                                        <span id="psuWattage" class="text-sm font-bold text-white">-- Watt</span>
+                                    </div>
+                                </div>
+                                <span id="psuStatusBadge" class="bg-emerald-950 text-emerald-400 text-xs px-3 py-1 rounded-full font-bold">آمن جداً</span>
+                            </div>
+
+                            <!-- PCIe Bus Compatibility -->
+                            <div class="bg-darkBg p-4 rounded-xl border border-panelBorder flex items-center justify-between">
+                                <div class="flex items-center space-x-3 space-x-reverse">
+                                    <div class="w-10 h-10 rounded-lg bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
+                                        <i class="fa-solid fa-network-wired text-lg"></i>
+                                    </div>
+                                    <div>
+                                        <span class="block text-xs text-gray-400">منفذ كرت الشاشة (PCIe Express)</span>
+                                        <span id="pcieStatus" class="text-sm font-bold text-white">متوافق بالكامل (PCIe 4.0/5.0)</span>
+                                    </div>
+                                </div>
+                                <i class="fa-solid fa-circle-check text-neonGreen text-lg"></i>
+                            </div>
+
+                            <!-- RAM Check -->
+                            <div class="bg-darkBg p-4 rounded-xl border border-panelBorder flex items-center justify-between">
+                                <div class="flex items-center space-x-3 space-x-reverse">
+                                    <div class="w-10 h-10 rounded-lg bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400">
+                                        <i class="fa-solid fa-memory text-lg"></i>
+                                    </div>
+                                    <div>
+                                        <span class="block text-xs text-gray-400">كفاية ذاكرة الرام للمهام</span>
+                                        <span id="ramCheckStatus" class="text-sm font-bold text-white">ممتازة ومناسبة للألعاب الحديثة</span>
+                                    </div>
+                                </div>
+                                <i id="ramCheckIcon" class="fa-solid fa-circle-check text-neonGreen text-lg"></i>
+                            </div>
+
+                            <!-- Recommendation & Upgrade Advise -->
+                            <div class="bg-panelBg/70 p-4 rounded-xl border border-panelBorder">
+                                <h4 class="text-xs font-bold text-neonYellow mb-2 flex items-center gap-1.5">
+                                    <i class="fa-solid fa-lightbulb"></i> نصيحة التحديث والتطوير:
+                                </h4>
+                                <p id="upgradeAdviceText" class="text-xs text-gray-300 leading-relaxed">
+                                    التجميعة متكاملة وممتازة، ولا تحتاج لتحديث قريب للقطع الحالية.
+                                </p>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-panelBorder glass-panel mt-12 py-6">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-gray-400 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p>جميع الحقوق محفوظة &copy; 2026 | GAMES CENTER</p>
+            <div class="flex items-center space-x-4 space-x-reverse text-gray-400">
+                <span class="hover:text-neonCyan transition-colors cursor-pointer" onclick="alert('تم حساب النتائج عبر خوارزميات قياس الأداء المعتمدة بناءً على اختبارات الألعاب الواقعية 2026.');"><i class="fa-solid fa-circle-info ml-1"></i> حول الحاسبة</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Application Logic -->
+    <script>
+        // Database of Processors (CPUs) with performance index scores (0 - 1000) & Power TDP
+        const cpuDatabase = [
+            // Intel
+            { id: 'i3_10100f', name: 'Intel Core i3-10100F', score: 380, tdp: 65, brand: 'Intel' },
+            { id: 'i5_10400f', name: 'Intel Core i5-10400F', score: 460, tdp: 65, brand: 'Intel' },
+            { id: 'i5_11400f', name: 'Intel Core i5-11400F', score: 530, tdp: 65, brand: 'Intel' },
+            { id: 'i5_12400f', name: 'Intel Core i5-12400F', score: 670, tdp: 65, brand: 'Intel' },
+            { id: 'i5_13400f', name: 'Intel Core i5-13400F', score: 740, tdp: 65, brand: 'Intel' },
+            { id: 'i5_13600k', name: 'Intel Core i5-13600K', score: 890, tdp: 125, brand: 'Intel' },
+            { id: 'i7_12700k', name: 'Intel Core i7-12700K', score: 840, tdp: 125, brand: 'Intel' },
+            { id: 'i7_13700k', name: 'Intel Core i7-13700K', score: 940, tdp: 125, brand: 'Intel' },
+            { id: 'i7_14700k', name: 'Intel Core i7-14700K', score: 970, tdp: 125, brand: 'Intel' },
+            { id: 'i9_13900k', name: 'Intel Core i9-13900K', score: 990, tdp: 150, brand: 'Intel' },
+            { id: 'i9_14900k', name: 'Intel Core i9-14900K', score: 1000, tdp: 150, brand: 'Intel' },
+            
+            // AMD
+            { id: 'r3_3100', name: 'AMD Ryzen 3 3100', score: 360, tdp: 65, brand: 'AMD' },
+            { id: 'r5_3600', name: 'AMD Ryzen 5 3600', score: 470, tdp: 65, brand: 'AMD' },
+            { id: 'r5_5600x', name: 'AMD Ryzen 5 5600X', score: 680, tdp: 65, brand: 'AMD' },
+            { id: 'r7_5700x', name: 'AMD Ryzen 7 5700X', score: 730, tdp: 65, brand: 'AMD' },
+            { id: 'r7_5800x3d', name: 'AMD Ryzen 7 5800X3D', score: 880, tdp: 105, brand: 'AMD' },
+            { id: 'r5_7600x', name: 'AMD Ryzen 5 7600X', score: 820, tdp: 105, brand: 'AMD' },
+            { id: 'r7_7700x', name: 'AMD Ryzen 7 7700X', score: 890, tdp: 105, brand: 'AMD' },
+            { id: 'r7_7800x3d', name: 'AMD Ryzen 7 7800X3D', score: 995, tdp: 120, brand: 'AMD' },
+            { id: 'r9_7950x3d', name: 'AMD Ryzen 9 7950X3D', score: 990, tdp: 120, brand: 'AMD' }
+        ];
+
+        // Database of Graphics Cards (GPUs) with performance index scores (0 - 1000) & Power TDP
+        const gpuDatabase = [
+            // NVIDIA
+            { id: 'gtx_1650', name: 'NVIDIA GeForce GTX 1650 4GB', score: 220, tdp: 75, brand: 'NVIDIA' },
+            { id: 'gtx_1660s', name: 'NVIDIA GeForce GTX 1660 Super 6GB', score: 340, tdp: 125, brand: 'NVIDIA' },
+            { id: 'rtx_2060', name: 'NVIDIA GeForce RTX 2060 6GB', score: 410, tdp: 160, brand: 'NVIDIA' },
+            { id: 'rtx_3050', name: 'NVIDIA GeForce RTX 3050 8GB', score: 390, tdp: 130, brand: 'NVIDIA' },
+            { id: 'rtx_3060', name: 'NVIDIA GeForce RTX 3060 12GB', score: 520, tdp: 170, brand: 'NVIDIA' },
+            { id: 'rtx_3060ti', name: 'NVIDIA GeForce RTX 3060 Ti 8GB', score: 640, tdp: 200, brand: 'NVIDIA' },
+            { id: 'rtx_4060', name: 'NVIDIA GeForce RTX 4060 8GB', score: 630, tdp: 115, brand: 'NVIDIA' },
+            { id: 'rtx_3070', name: 'NVIDIA GeForce RTX 3070 8GB', score: 720, tdp: 220, brand: 'NVIDIA' },
+            { id: 'rtx_4060ti', name: 'NVIDIA GeForce RTX 4060 Ti 8GB', score: 710, tdp: 160, brand: 'NVIDIA' },
+            { id: 'rtx_4070', name: 'NVIDIA GeForce RTX 4070 12GB', score: 830, tdp: 200, brand: 'NVIDIA' },
+            { id: 'rtx_4070_super', name: 'NVIDIA GeForce RTX 4070 Super 12GB', score: 890, tdp: 220, brand: 'NVIDIA' },
+            { id: 'rtx_4070ti', name: 'NVIDIA GeForce RTX 4070 Ti 12GB', score: 910, tdp: 285, brand: 'NVIDIA' },
+            { id: 'rtx_4080', name: 'NVIDIA GeForce RTX 4080 16GB', score: 960, tdp: 320, brand: 'NVIDIA' },
+            { id: 'rtx_4090', name: 'NVIDIA GeForce RTX 4090 24GB', score: 1000, tdp: 450, brand: 'NVIDIA' },
+
+            // AMD
+            { id: 'rx_6500xt', name: 'AMD Radeon RX 6500 XT 4GB', score: 260, tdp: 107, brand: 'AMD' },
+            { id: 'rx_6600', name: 'AMD Radeon RX 6600 8GB', score: 480, tdp: 132, brand: 'AMD' },
+            { id: 'rx_6650xt', name: 'AMD Radeon RX 6650 XT 8GB', score: 570, tdp: 180, brand: 'AMD' },
+            { id: 'rx_6700xt', name: 'AMD Radeon RX 6700 XT 12GB', score: 670, tdp: 230, brand: 'AMD' },
+            { id: 'rx_7600', name: 'AMD Radeon RX 7600 8GB', score: 590, tdp: 165, brand: 'AMD' },
+            { id: 'rx_7700xt', name: 'AMD Radeon RX 7700 XT 12GB', score: 780, tdp: 245, brand: 'AMD' },
+            { id: 'rx_7800xt', name: 'AMD Radeon RX 7800 XT 16GB', score: 860, tdp: 263, brand: 'AMD' },
+            { id: 'rx_7900xt', name: 'AMD Radeon RX 7900 XT 20GB', score: 940, tdp: 315, brand: 'AMD' },
+            { id: 'rx_7900xtx', name: 'AMD Radeon RX 7900 XTX 24GB', score: 980, tdp: 355, brand: 'AMD' }
+        ];
+
+        // State Management
+        let selectedCpu = cpuDatabase.find(c => c.id === 'i5_12400f');
+        let selectedGpu = gpuDatabase.find(g => g.id === 'rtx_4060');
+        let selectedResolution = '1080p';
+        let selectedRam = 16;
+        let selectedUsage = 'gaming';
+        let chartInstance = null;
+
+        // Initialize Application
+        window.onload = function() {
+            populateSelects();
+            setupEventListeners();
+            initChart();
+            calculateAll();
+        };
+
+        // Populate CPU & GPU Dropdowns
+        function populateSelects() {
+            const cpuSelect = document.getElementById('cpuSelect');
+            const gpuSelect = document.getElementById('gpuSelect');
+
+            // Sort & Append CPUs
+            cpuDatabase.sort((a,b) => a.name.localeCompare(b.name)).forEach(cpu => {
+                const opt = document.createElement('option');
+                opt.value = cpu.id;
+                opt.textContent = cpu.name;
+                if(cpu.id === selectedCpu.id) opt.selected = true;
+                cpuSelect.appendChild(opt);
+            });
+
+            // Sort & Append GPUs
+            gpuDatabase.sort((a,b) => a.name.localeCompare(b.name)).forEach(gpu => {
+                const opt = document.createElement('option');
+                opt.value = gpu.id;
+                opt.textContent = gpu.name;
+                if(gpu.id === selectedGpu.id) opt.selected = true;
+                gpuSelect.appendChild(opt);
+            });
+
+            // Update Header Stats
+            document.getElementById('statCpuCount').innerText = cpuDatabase.length;
+            document.getElementById('statGpuCount').innerText = gpuDatabase.length;
+        }
+
+        // Setup UI Event Listeners
+        function setupEventListeners() {
+            // Dropdown changes
+            document.getElementById('cpuSelect').addEventListener('change', (e) => {
+                selectedCpu = cpuDatabase.find(c => c.id === e.target.value);
+                calculateAll();
+            });
+
+            document.getElementById('gpuSelect').addEventListener('change', (e) => {
+                selectedGpu = gpuDatabase.find(g => g.id === e.target.value);
+                calculateAll();
+            });
+
+            document.getElementById('usageSelect').addEventListener('change', (e) => {
+                selectedUsage = e.target.value;
+                calculateAll();
+            });
+
+            // Resolution Buttons
+            document.querySelectorAll('.res-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.res-btn').forEach(b => {
+                        b.classList.remove('active', 'bg-neonCyan', 'text-black', 'border-neonCyan');
+                        b.classList.add('bg-darkBg', 'text-gray-300', 'border-panelBorder');
+                    });
+                    btn.classList.add('active', 'bg-neonCyan', 'text-black', 'border-neonCyan');
+                    btn.classList.remove('bg-darkBg', 'text-gray-300', 'border-panelBorder');
+                    
+                    selectedResolution = btn.getAttribute('data-res');
+                    calculateAll();
+                });
+            });
+
+            // RAM Buttons
+            document.querySelectorAll('.ram-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    document.querySelectorAll('.ram-btn').forEach(b => {
+                        b.classList.remove('active', 'bg-neonCyan', 'text-black', 'border-neonCyan');
+                        b.classList.add('bg-darkBg', 'text-gray-300', 'border-panelBorder');
+                    });
+                    btn.classList.add('active', 'bg-neonCyan', 'text-black', 'border-neonCyan');
+                    btn.classList.remove('bg-darkBg', 'text-gray-300', 'border-panelBorder');
+                    
+                    selectedRam = parseInt(btn.getAttribute('data-ram'));
+                    calculateAll();
+                });
+            });
+
+            // Main Calculate Button
+            document.getElementById('btnCalculate').addEventListener('click', () => {
+                calculateAll();
+                showToast("تم تحديث نتيجة الفحص بنجاح!");
+            });
+
+            // Share / Copy Button
+            document.getElementById('btnShare').addEventListener('click', copySummaryToClipboard);
+
+            // Presets
+            document.getElementById('presetHighEnd').addEventListener('click', () => {
+                setPreset('i7_14700k', 'rtx_4080', '1440p', 32);
+            });
+            document.getElementById('presetBudget').addEventListener('click', () => {
+                setPreset('i5_12400f', 'rx_6600', '1080p', 16);
+            });
+
+            // Tabs Switching
+            const tabBtnFps = document.getElementById('tabBtnFps');
+            const tabBtnCompat = document.getElementById('tabBtnCompat');
+            const tabContentFps = document.getElementById('tabContentFps');
+            const tabContentCompat = document.getElementById('tabContentCompat');
+
+            tabBtnFps.addEventListener('click', () => {
+                tabBtnFps.className = "flex-1 py-3.5 px-4 text-xs sm:text-sm font-bold text-neonCyan border-b-2 border-neonCyan transition-all flex items-center justify-center gap-2";
+                tabBtnCompat.className = "flex-1 py-3.5 px-4 text-xs sm:text-sm font-bold text-gray-400 hover:text-white transition-all flex items-center justify-center gap-2";
+                tabContentFps.classList.remove('hidden');
+                tabContentCompat.classList.add('hidden');
+            });
+
+            tabBtnCompat.addEventListener('click', () => {
+                tabBtnCompat.className = "flex-1 py-3.5 px-4 text-xs sm:text-sm font-bold text-neonCyan border-b-2 border-neonCyan transition-all flex items-center justify-center gap-2";
+                tabBtnFps.className = "flex-1 py-3.5 px-4 text-xs sm:text-sm font-bold text-gray-400 hover:text-white transition-all flex items-center justify-center gap-2";
+                tabContentCompat.classList.remove('hidden');
+                tabContentFps.classList.add('hidden');
+            });
+        }
+
+        function setPreset(cpuId, gpuId, res, ram) {
+            document.getElementById('cpuSelect').value = cpuId;
+            document.getElementById('gpuSelect').value = gpuId;
+            selectedCpu = cpuDatabase.find(c => c.id === cpuId);
+            selectedGpu = gpuDatabase.find(g => g.id === gpuId);
+            
+            // Trigger Resolution button click
+            document.querySelector(`.res-btn[data-res="${res}"]`).click();
+            // Trigger RAM button click
+            document.querySelector(`.ram-btn[data-ram="${ram}"]`).click();
+            
+            calculateAll();
+            showToast("تم تحميل التجميعة الجاهزة!");
+        }
+
+        // Core Calculation Engine
+        function calculateAll() {
+            if(!selectedCpu || !selectedGpu) return;
+
+            // Display raw scores
+            document.getElementById('cpuScoreTag').innerText = `قوة: ${selectedCpu.score}`;
+            document.getElementById('gpuScoreTag').innerText = `قوة: ${selectedGpu.score}`;
+
+            // Resolution Multiplier Impact
+            // Lower resolutions (1080p) depend heavily on CPU. Higher resolutions (4K) rely heavily on GPU.
+            let resolutionCpuWeight = 1.0;
+            let resolutionGpuWeight = 1.0;
+
+            if (selectedResolution === '1080p') {
+                resolutionCpuWeight = 1.25; // CPU plays bigger role
+                resolutionGpuWeight = 0.85;
+            } else if (selectedResolution === '1440p') {
+                resolutionCpuWeight = 1.0;
+                resolutionGpuWeight = 1.0;
+            } else if (selectedResolution === '4k') {
+                resolutionCpuWeight = 0.75;
+                resolutionGpuWeight = 1.35; // GPU bottleneck dominant
+            }
+
+            const effectiveCpuScore = selectedCpu.score * resolutionCpuWeight;
+            const effectiveGpuScore = selectedGpu.score * resolutionGpuWeight;
+
+            // Calculate Difference
+            const diff = Math.abs(effectiveCpuScore - effectiveGpuScore);
+            const maxScore = Math.max(effectiveCpuScore, effectiveGpuScore);
+            
+            // Bottleneck percentage formula normalized
+            let bottleneckPercent = Math.round((diff / maxScore) * 100);
+            if (bottleneckPercent > 65) bottleneckPercent = 65; // cap for realism
+
+            // Update Resolution Badge
+            document.getElementById('resolutionBadge').innerText = selectedResolution.toUpperCase() + (selectedResolution === '1080p' ? ' FHD' : selectedResolution === '1440p' ? ' 2K' : ' Ultra HD');
+
+            // Gauge Circle Animation Update
+            updateGaugeSVG(bottleneckPercent);
+
+            // Determine bottleneck source and status text
+            const bottleneckPercentElem = document.getElementById('bottleneckPercent');
+            const bottleneckStatusElem = document.getElementById('bottleneckStatus');
+            const bottleneckLimiterElem = document.getElementById('bottleneckLimiter');
+            const bottleneckDescElem = document.getElementById('bottleneckDesc');
+
+            bottleneckPercentElem.innerText = `${bottleneckPercent}%`;
+
+            let limiterType = 'balanced'; // 'cpu', 'gpu', or 'balanced'
+
+            if (bottleneckPercent < 10) {
+                bottleneckStatusElem.innerText = 'متوازن ممتاز (< 10%)';
+                bottleneckStatusElem.className = 'text-xs font-bold text-neonGreen mt-1';
+                bottleneckLimiterElem.innerHTML = `<i class="fa-solid fa-check-circle text-neonGreen ml-1"></i> لا يوجد تقييد ملموس`;
+                bottleneckDescElem.innerText = `التجميعة متوازنة جداً عند دقة ${selectedResolution}. المعالج وكرت الشاشة يعملان بكفاءة متناغمة دون أي هدر في الطاقة الأداء.`;
+            } else if (effectiveCpuScore < effectiveGpuScore) {
+                limiterType = 'cpu';
+                bottleneckStatusElem.innerText = bottleneckPercent >= 20 ? 'عنق زجاجة عالي (> 20%)' : 'عنق زجاجة متوسط (10-20%)';
+                bottleneckStatusElem.className = bottleneckPercent >= 20 ? 'text-xs font-bold text-neonRed mt-1' : 'text-xs font-bold text-neonYellow mt-1';
+                bottleneckLimiterElem.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-neonRed ml-1"></i> المعالج (CPU) هو السبب`;
+                bottleneckDescElem.innerText = `المعالج (${selectedCpu.name}) أضعف من كرت الشاشة في دقة ${selectedResolution}. لن يستطيع كرت الشاشة إخراج كامل قوته بسبب بطء المعالج في معالجة الإطارات.`;
+            } else {
+                limiterType = 'gpu';
+                bottleneckStatusElem.innerText = bottleneckPercent >= 20 ? 'عنق زجاجة عالي (> 20%)' : 'عنق زجاجة متوسط (10-20%)';
+                bottleneckStatusElem.className = bottleneckPercent >= 20 ? 'text-xs font-bold text-neonRed mt-1' : 'text-xs font-bold text-neonYellow mt-1';
+                bottleneckLimiterElem.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-amber-400 ml-1"></i> كرت الشاشة (GPU) هو السبب`;
+                bottleneckDescElem.innerText = `كرت الشاشة (${selectedGpu.name}) مستهلك بالكامل في دقة ${selectedResolution}. المعالج يقدم أداءً أعلى بكثير مما يطلبه كرت الشاشة الحالي.`;
+            }
+
+            // Calculate FPS benchmarks based on scores
+            updateFpsEstimates(selectedCpu.score, selectedGpu.score, selectedResolution);
+
+            // Compatibility Checks
+            updateCompatibilityChecks(selectedCpu, selectedGpu, selectedRam, limiterType);
+
+            // Update Chart
+            updateFpsChart(selectedCpu.score, selectedGpu.score);
+        }
+
+        // Animated Gauge Function
+        function updateGaugeSVG(percent) {
+            const circle = document.getElementById('gaugeCircle');
+            // Dasharray = 264. Offset ranges from 264 (0%) to 66 (100% arc)
+            const maxOffset = 66;
+            const minOffset = 264;
+            const newOffset = minOffset - ((percent / 100) * (minOffset - maxOffset));
+            
+            circle.style.strokeDashoffset = newOffset;
+
+            // Change Color according to level
+            if (percent < 10) {
+                circle.style.stroke = "#00ff88"; // Neon Green
+            } else if (percent < 20) {
+                circle.style.stroke = "#ffe600"; // Neon Yellow
+            } else {
+                circle.style.stroke = "#ff2a6d"; // Neon Red
+            }
+        }
+
+        // FPS Calculation Formula
+        function updateFpsEstimates(cpuScore, gpuScore, res) {
+            // Combined weight score
+            const basePower = (cpuScore * 0.35) + (gpuScore * 0.65);
+            
+            let resFactor = 1.0;
+            if (res === '1440p') resFactor = 0.72;
+            if (res === '4k') resFactor = 0.45;
+
+            const esportsFps = Math.round((basePower * 0.45) * (res === '1080p' ? 1.2 : resFactor * 1.1));
+            const aaaFps = Math.round((basePower * 0.18) * resFactor);
+            const rayTracingFps = Math.round((basePower * 0.11) * resFactor);
+
+            document.getElementById('fpsEsports').innerText = `${Math.max(30, esportsFps)} FPS`;
+            document.getElementById('fpsAAA').innerText = `${Math.max(20, aaaFps)} FPS`;
+            document.getElementById('fpsRayTracing').innerText = `${Math.max(15, rayTracingFps)} FPS`;
+        }
+
+        // Compatibility Checks logic
+        function updateCompatibilityChecks(cpu, gpu, ram, limiterType) {
+            // PSU Wattage calculation (CPU TDP + GPU TDP + System Baseline 150W + 25% Overhead Buffer)
+            const estimatedWatts = Math.round((cpu.tdp + gpu.tdp + 150) * 1.25);
+            document.getElementById('psuWattage').innerText = `${estimatedWatts} واط (Watt) كحد أدنى مُوصى به`;
+
+            const psuBadge = document.getElementById('psuStatusBadge');
+            if(estimatedWatts > 750) {
+                psuBadge.innerText = 'يحتاج مزود طاقة قوي';
+                psuBadge.className = 'bg-amber-950 text-amber-400 text-xs px-3 py-1 rounded-full font-bold';
+            } else {
+                psuBadge.innerText = 'آمن ومعتدل';
+                psuBadge.className = 'bg-emerald-950 text-emerald-400 text-xs px-3 py-1 rounded-full font-bold';
+            }
+
+            // RAM Check Status
+            const ramStatus = document.getElementById('ramCheckStatus');
+            const ramIcon = document.getElementById('ramCheckIcon');
+
+            if (ram < 16) {
+                ramStatus.innerText = '8GB تعتبر ضعيفة للألعاب الحديثة (قد تسبب تقطيع Stuttering)';
+                ramStatus.className = 'text-sm font-bold text-neonRed';
+                ramIcon.className = 'fa-solid fa-triangle-exclamation text-neonRed text-lg';
+            } else if (ram === 16) {
+                ramStatus.innerText = '16GB ممتازة وتكفي معظم الألعاب الحالية بوضوح';
+                ramStatus.className = 'text-sm font-bold text-white';
+                ramIcon.className = 'fa-solid fa-circle-check text-neonGreen text-lg';
+            } else {
+                ramStatus.innerText = `${ram}GB مثالية جداً للبث المباشر والمونتاج والألعاب الثقيلة`;
+                ramStatus.className = 'text-sm font-bold text-neonCyan';
+                ramIcon.className = 'fa-solid fa-circle-check text-neonCyan text-lg';
+            }
+
+            // Upgrade Recommendation Text
+            const adviceElem = document.getElementById('upgradeAdviceText');
+            if (limiterType === 'cpu') {
+                adviceElem.innerText = `للحصول على أقصى أداء من كرت الشاشة (${gpu.name})، نقترح ترقية المعالج مستقبلاً إلى معالج أحدث مثل Core i7 أو Ryzen 7 (مثل Ryzen 7 7800X3D) لرفع معدل الإطارات الكلي.`;
+            } else if (limiterType === 'gpu') {
+                adviceElem.innerText = `معالجك الحالي قوي جداً. لزيادة أداء الألعاب بدقات عالية مثل 2K أو 4K، يمكنك التفكير في ترقية كرت الشاشة لمستوى أعلى مستقبلاً دون الحاجة لتغيير المعالج.`;
+            } else {
+                adviceElem.innerText = `التجميعة متوازنة وممتازة حالياً ولا تحتاج لأي تعديل فورية. ننصح فقط بالـتأكد من وجود تبريد مناسب ومزود طاقة معتمد +80.`;
+            }
+        }
+
+        // Chart.js Visualization logic
+        function initChart() {
+            const ctx = document.getElementById('fpsChart').getContext('2d');
+            chartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['1080p FHD', '1440p 2K', '4K Ultra'],
+                    datasets: [{
+                        label: 'متوسط إطارات الألعاب (AAA FPS)',
+                        data: [0, 0, 0],
+                        backgroundColor: [
+                            'rgba(0, 229, 255, 0.7)',
+                            'rgba(0, 255, 136, 0.7)',
+                            'rgba(255, 230, 0, 0.7)'
+                        ],
+                        borderColor: [
+                            '#00e5ff',
+                            '#00ff88',
+                            '#ffe600'
+                        ],
+                        borderWidth: 1.5,
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: '#1f2b48' },
+                            ticks: { color: '#94a3b8', font: { family: 'Cairo' } }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#94a3b8', font: { family: 'Cairo' } }
+                        }
+                    }
+                }
+            });
+        }
+
+        function updateFpsChart(cpuScore, gpuScore) {
+            if(!chartInstance) return;
+            const basePower = (cpuScore * 0.35) + (gpuScore * 0.65);
+            
+            const fps1080 = Math.round((basePower * 0.18) * 1.0);
+            const fps1440 = Math.round((basePower * 0.18) * 0.72);
+            const fps4k = Math.round((basePower * 0.18) * 0.45);
+
+            chartInstance.data.datasets[0].data = [fps1080, fps1440, fps4k];
+            chartInstance.update();
+        }
+
+        // Copy Summary Report to Clipboard
+        function copySummaryToClipboard() {
+            const bPercent = document.getElementById('bottleneckPercent').innerText;
+            const bStatus = document.getElementById('bottleneckStatus').innerText;
+            const textToCopy = `🖥️ **تقرير تجميعة الكمبيوتر وعنق الزجاجة**
+-----------------------------------------
+🔹 المعالج: ${selectedCpu.name}
+🔹 كرت الشاشة: ${selectedGpu.name}
+🔹 دقة الشاشة: ${selectedResolution.toUpperCase()}
+🔹 سعة الرام: ${selectedRam} GB
+-----------------------------------------
+📊 نسبة عنق الزجاجة: ${bPercent} (${bStatus})
+⚡ مزود الطاقة المقترح: ${document.getElementById('psuWattage').innerText}
+-----------------------------------------
+تم استخراج التقرير من حاسبة عنق الزجاجة المتقدمة.`;
+
+            // Using fallback copy method
+            const tempInput = document.createElement('textarea');
+            tempInput.value = textToCopy;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+
+            showToast("تم نسخ تقرير التجميعة إلى الحافظة!");
+        }
+
+        // Toast Notification Helper
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMsg');
+            toastMsg.innerText = message;
+            
+            toast.classList.remove('translate-y-32', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-32', 'opacity-0');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>

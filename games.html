@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مكتبة الألعاب | GAMES CENTER</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #0b0f19;
+            color: #f1f5f9;
+        }
+        .glass-panel {
+            background: rgba(19, 27, 46, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(31, 43, 72, 0.8);
+        }
+        .game-card-vertical {
+            background: rgba(19, 27, 46, 0.9);
+            border: 1px solid rgba(31, 43, 72, 0.8);
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+        }
+        .game-card-vertical:hover {
+            transform: translateY(-6px);
+            border-color: #00ff88;
+            box-shadow: 0 10px 25px rgba(0, 255, 136, 0.2);
+        }
+        .poster-wrapper {
+            position: relative;
+            width: 100%;
+            padding-top: 135%;
+            overflow: hidden;
+        }
+        .poster-wrapper img {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            object-fit: cover;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+    <!-- شريط علوي للعودة -->
+    <header class="glass-panel border-b border-gray-800 p-4">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <h1 class="text-xl font-bold text-white"><i class="fa-solid fa-gamepad text-emerald-400 ml-2"></i>مكتبة الألعاب الرقمية</h1>
+            <a href="index.html" class="bg-gray-800 hover:bg-gray-700 text-cyan-400 text-xs px-4 py-2 rounded-lg font-bold transition-all flex items-center gap-2">
+                <i class="fa-solid fa-house"></i> العودة للرئيسية (حاسبة العتاد)
+            </a>
+        </div>
+    </header>
+
+    <!-- محتوى الألعاب والكارتات الطولية -->
+    <main class="max-w-7xl mx-auto px-4 py-10 flex-grow w-full">
+        <div class="text-center mb-10">
+            <h2 class="text-3xl font-black text-white mb-2">أحدث الألعاب بروابط مباشرة</h2>
+            <p class="text-gray-400 text-sm">اختر اللعبة وابدأ التحميل الفوري بروابط خارجية آمنة</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            
+            <!-- لعبة 1 -->
+            <div class="game-card-vertical">
+                <div class="poster-wrapper">
+                    <span class="absolute top-3 left-3 bg-black/80 border border-cyan-400 text-cyan-400 text-xs px-2.5 py-1 rounded-lg font-bold z-10">
+                        50.6 GB
+                    </span>
+                    <img src="images\007.jpg" alt="007.jpg">
+                </div>
+                <div class="p-4 flex flex-col justify-between flex-grow">
+                    <div>
+                        <h4 class="text-base font-bold text-white mb-1">007 First Light</h4>
+                        <p class="text-xs text-gray-400 mb-4">أكشن / عالم مفتوح</p>
+                    </div>
+                    <a href="https://tunnel5.dlproxy.uk/download/yUJ90wKZi0y8fuYhVaNWwVo2CfeCXFBsdLOMP_9hKO84GxkFRvGIeasHtbtpVVqHPip0nASf6XpffMTxazWH_-af6i3SGKnAEJnyZnUBioTz03OyC19bz71GPWEGO6lx1-dXSD2M7p5sDAwnSjEi8L6UBChy9xZZZeWJuiX7XZWVI3bZD-cfPRDUhXxG1N3TF38g74DbmvM5jYl3ZoEO5v6XvzCSNpcDyrdrV_fm6Tlf5MulHxcunwgiEJsj5GyJJDbU3Sxjr2HnvE6_5PWP5BfU5rNIr81Mzm9JSF_X2w70fe9Dvnq_ZFVNlNctuVIajKs_lNf0dMyNNRr1Uq6xgpKEpzIz4v3O8sfJRHu4l0QyLTr9yCjXznlHClmDvdr_GfrRTpB6OPu5DuNAdwCI0rk_TcXF735b4ZOa6882VgU?sig=HAlUtcRoOPJQ580Iqpu1_68QCgGMbnzjfHMW0N6QVVU" target="_blank" class="w-full border border-emerald-400 text-emerald-400 hover:bg-emerald-400 hover:text-black font-bold text-xs py-2.5 rounded-xl transition-all text-center flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-download"></i> Download (تحميل مباشر)
+                    </a>
+                </div>
+            </div>
+
+            <!-- لعبة 2 -->
+            <div class="game-card-vertical">
+                <div class="poster-wrapper">
+                    <span class="absolute top-3 left-3 bg-black/80 border border-emerald-400 text-emerald-400 text-xs px-2.5 py-1 rounded-lg font-bold z-10">
+                        60.9 GB
+                    </span>
+                    <img src="images\days.jpg" alt="days.jpg">
+                </div>
+                <div class="p-4 flex flex-col justify-between flex-grow">
+                    <div>
+                        <h4 class="text-base font-bold text-white mb-1">Days Gone</h4>
+                        <p class="text-xs text-gray-400 mb-4">عالم مفتوح / نجاة</p>
+                    </div>
+                    <a href="https://tunnel5.dlproxy.uk/download/bKjc2RBKXdDUWR7phZWCL0_1haO7Us9TzsZOuupMQvlwpqLgRGOKGf_qwcSu98mIbJQgbxLWDm5WUZgg6vlwbg1l6bL77_RWq3BjUk1tsreakQx-Kz5XkQMVHFaCn2RXbF5-DpitFHLZdqBr7roRcNaAhcKAT7GM7pSBomP3L0GjVzeC8ccPUApJGk28HpoHTx4A5Vl9Mc5ZQFcU5FSPhTQXKvMVLysXdKeBZ2zpx4Oku2WOI0byCmC3MI1gh_E2z8N3f1uRmZ_QyAJln7BPKv7TlrXJ569u5yWMV0IJVtXaEfd-gPTYmBkwMOsqQcsbt5qxcNR_eaIwaPNF9J6t5vjNwBMGZsNJKHoEuQCfrzbp7ApGTs9FW9gvCPv_gFKy4FxkAkosHN2q_Jts9veRGw?sig=E5bgDns2YA0YRqqS-5g-ut0UF4AymsiIl-plpZiOB0U" target="_blank" class="w-full border border-emerald-400 text-emerald-400 hover:bg-emerald-400 hover:text-black font-bold text-xs py-2.5 rounded-xl transition-all text-center flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-download"></i> Download (تحميل مباشر)
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- الفوتر -->
+    <footer class="border-t border-gray-800 py-6 text-center text-xs text-gray-500">
+        <p>جميع الحقوق محفوظة &copy; 2026 | GAMES CENTER</p>
+    </footer>
+
+</body>
+</html>
