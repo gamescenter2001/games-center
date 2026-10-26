@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تفاصيل اللعبة والتحميل</title>
+    <!-- استدعاء التنسيقات -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-950 text-white min-h-screen p-4 sm:p-8">
+
+    <div class="max-w-3xl mx-auto">
+        <!-- زر العودة لقائمة الألعاب -->
+        <a href="games.html" class="inline-flex items-center gap-2 bg-slate-800 hover:bg-slate-700 text-cyan-400 px-4 py-2 rounded-lg mb-6 transition">
+            <i class="fas fa-arrow-right"></i> العودة لقائمة الألعاب
+        </a>
+
+        <!-- صورة اللعبة الرئيسية (نفس الكارت) -->
+        <div class="mb-6 rounded-2xl overflow-hidden border border-slate-800 shadow-xl">
+            <img src="days.jpg" alt="صورة اللعبة" class="w-full h-80 sm:h-96 object-cover">
+        </div>
+
+        <!-- قصة اللعبة -->
+        <div class="bg-slate-900 border border-slate-800 p-6 rounded-2xl mb-6">
+            <h2 class="text-xl font-bold mb-3 text-cyan-400"><i class="fas fa-info-circle"></i> قصة اللعبة</h2>
+            <p class="text-slate-300 leading-relaxed">
+                هنا تكتب قصة ونبذة تعريفية عن اللعبة... (يمكنك تغيير هذا النص وتعديله بحسب اللعبة التي تخصها هذه الصفحة).
+            </p>
+        </div>
+
+        <!-- زر التحميل المباشر (أصبح هنا فقط) -->
+        <div class="mb-8 text-center">
+            <a href="ضع_رابط_التحميل_هنا" class="inline-flex items-center justify-center gap-3 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-bold py-4 px-8 rounded-xl shadow-lg w-full text-lg transition">
+                <i class="fas fa-download"></i> تحميل مباشر (Download)
+            </a>
+        </div>
+
+        <!-- صور من داخل اللعبة -->
+        <div>
+            <h2 class="text-xl font-bold mb-4 text-cyan-400"><i class="fas fa-images"></i> صور من داخل اللعبة</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div class="rounded-xl overflow-hidden border border-slate-800">
+                    <img src="days.jpg" alt="صورة داخلية 1" class="w-full h-48 object-cover hover:scale-105 transition duration-300">
+                </div>
+                <div class="rounded-xl overflow-hidden border border-slate-800">
+                    <img src="days.jpg" alt="صورة داخلية 2" class="w-full h-48 object-cover hover:scale-105 transition duration-300">
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
