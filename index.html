@@ -136,23 +136,21 @@ body {
             <!-- Header Actions -->
 
 
+<!-- زر القائمة (الثلاث خطوط) للهاتف -->
+<div class="mobile-menu-container">
+    <button class="menu-toggle-btn" onclick="toggleMenu()">
+        <i class="fas fa-bars"></i> القائمة
+    </button>
+    
+    <!-- القائمة المنسدلة التي تحتوي على الأقسام -->
+    <nav class="dropdown-menu" id="myDropdownMenu">
+        <a href="#strong-pc"><i class="fas fa-bolt"></i> تجميعة قوية</a>
+        <a href="#budget-pc"><i class="fas fa-wallet"></i> التجميعة الاقتصادية</a>
+        <a href="games.html"><i class="fas fa-download"></i> تحميل الالعاب</a>
+    </nav>
+</div>
 
-            <div class="flex items-center space-x-3 space-x-reverse">
-                <button id="presetHighEnd" class="hidden sm:flex items-center gap-2 bg-panelBg border border-neonCyan/40 hover:border-neonCyan text-xs text-neonCyan px-3 py-2 rounded-lg transition-all">
-                    <i class="fa-solid fa-bolt"></i> تجميعة قوية
-                </button>
-                <button id="presetBudget" class="hidden sm:flex items-center gap-2 bg-panelBg border border-neonGreen/40 hover:border-neonGreen text-xs text-neonGreen px-3 py-2 rounded-lg transition-all">
-                    <i class="fa-solid fa-wallet"></i> تجميعة الاقتصادية
-                </button>
-                <button id="btnShare" 
-
-<a href="games.html" class="hidden sm:flex items-center gap-2 bg-panelBg border border-neonGreen/40 hover:border-neonGreen text-xs text-neonGreen px-3 py-2 rounded-lg transition-all font-bold">
-                    <i class="fa-solid fa-gamepad"></i> تحميل الالعاب
-                </a>
-
-
-                </button>
-            </div>
+                        
         </div>
     </header>
 
