@@ -1012,5 +1012,28 @@ body {
             }, 3000);
         }
     </script>
+
+
+<script>
+function toggleMenu() {
+    var menu = document.getElementById("myDropdownMenu");
+    menu.classList.toggle("show");
+}
+
+// إغلاق القائمة إذا ضغط المستخدم في أي مكان خارجها
+window.onclick = function(event) {
+    if (!event.target.matches('.menu-toggle-btn') && !event.target.matches('.menu-toggle-btn *')) {
+        var dropdowns = document.getElementsByClassName("dropdown-menu");
+        for (let i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+            }
+        }
+    }
+}
+</script>
+
+
 </body>
 </html>
