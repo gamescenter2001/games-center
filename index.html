@@ -206,54 +206,18 @@ body {
 
 
 
+<!-- هيدر الموقع -->
 <header class="bg-slate-950 border-b border-slate-800 sticky top-0 z-50 px-4 py-3 flex items-center justify-between">
-    <!-- اسم الموقع أو الشعار -->
-    <a href="index.html" class="text-xl font-bold text-red-600 tracking-wider">Menu</a>
+    <!-- شعار أو اسم الموقع -->
+    <a href="index.html" class="text-xl font-bold text-red-600 tracking-wider">ANKERGAMES</a>
 
-    <!-- أزرار الهيدر -->
-    <div class="flex items-center gap-4 text-slate-300">
-        <button class="hover:text-cyan-400"><i class="fas search text-lg"></i></button>
-        <!-- زر فتح القائمة (Hamburger) -->
-        <button id="menu-btn" class="hover:text-cyan-400 text-xl focus:outline-none">
-            <i class="fas fa-bars"></i>
-        </button>
-    </div>
+    <!-- زر تحميل الالعاب (مكانه حصراً في الهيدر بدون منيو) -->
+    <a href="games.html" class="inline-flex items-center gap-2 bg-slate-900 border border-slate-800 hover:border-cyan-500 text-cyan-400 text-sm px-3.5 py-1.5 rounded-lg font-medium transition duration-300">
+        <i class="fas fa-download"></i>
+        <span>تحميل الالعاب</span>
+    </a>
 </header>
-<!-- القائمة الجانبية (تحتوي على خيار تحميل الألعاب فقط) -->
-<div id="mobile-menu" class="fixed inset-0 bg-slate-950/95 z-50 transform translate-x-full transition-transform duration-300 flex flex-col p-6">
-    <!-- زر الإغلاق (علامة X) -->
-    <div class="flex justify-between items-center mb-8">
-        <span class="text-lg font-bold text-white">Menu</span>
-        <button id="close-btn" class="text-2xl text-slate-400 hover:text-white focus:outline-none">
-            <i class="fas fa-times"></i>
-        </button>
-    </div>
 
-    <!-- خيارات القائمة (تحميل الألعاب فقط) -->
-    <nav class="flex flex-col gap-6 text-slate-300 font-medium">
-        <a href="games.html" class="flex items-center gap-4 text-cyan-400 font-bold text-lg hover:underline transition">
-            <i class="fas fa-download"></i>
-            <span>تحميل الالعاب</span>
-        </a>
-    </nav>
-</div>
-
-<!-- كود جافاسكريبت للفتح والإغلاق -->
-<script>
-    const menuBtn = document.getElementById('menu-btn');
-    const closeBtn = document.getElementById('close-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-
-    menuBtn.addEventListener('click', () => {
-        mobileMenu.classList.remove('translate-x-full');
-    });
-
-    closeBtn.addEventListener('click', () => {
-        mobileMenu.classList.add('translate-x-full');
-    });
-</script>
-                   
-    </header>
 
 
 
