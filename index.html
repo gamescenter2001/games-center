@@ -48,65 +48,22 @@
     </script>
 
     <style>
-     
-    body {
-        margin: 0;
-        padding: 0;
-        min-height: 100vh;
-        font-family: 'Cairo', sans-serif;
-        color: #f1f5f9;
-        
-        /* خلفية نيون داكنة متموجة تنبض بالأزرق والأحمر */
-        background: linear-gradient(-45deg, #070a14, #002b47, #3b051a, #0b0f19);
-        background-size: 400% 400%;
-        animation: neonWave 10s ease infinite;
-        background-attachment: fixed;
-    }
-
-    /* إضافة طبقة توهج نيون متموجة في الخلفية */
-    body::before {
-        content: '';
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        z-index: -1;
-        background: 
-            radial-gradient(circle at 20% 30%, rgba(0, 229, 255, 0.2) 0%, transparent 50%),
-            radial-gradient(circle at 80% 70%, rgba(255, 42, 109, 0.2) 0%, transparent 50%);
-        animation: pulseGlow 6s ease-in-out infinite alternate;
-    }
-
-    /* حركة تموج الخلفية */
-    @keyframes neonWave {
-        0% {
-            background-position: 0% 50%;
-        }
-        50% {
-            background-position: 100% 50%;
-        }
-        100% {
-            background-position: 0% 50%;
-        }
-    }
-
-    /* حركة نبض الألوان */
-    @keyframes pulseGlow {
-        0% {
-            opacity: 0.5;
-            transform: scale(1);
-        }
-        100% {
-            opacity: 1;
-            transform: scale(1.08);
-        }
-    }
-
-
-    </style>
+ 
 </head>
+
+
+
+
+
+    <body>
+
+    <!-- الفيديو في الخلفية بدون أي تظليل فوقه -->
+    <div class="video-container">
+        <!-- استبدل intro.mp4 باسم ملف الفيديو الخاص بك -->
+        <video autoplay muted loop playsinline id="bgVideo">
+            <source src="d.mp4" type="video/mp4">
+            متصفحك لا يدعم تشغيل الفيديو.
+        </video>
 <body class="min-h-screen flex flex-col justify-between selection:bg-neonCyan selection:text-black">
 
     <!-- Toast Notification -->
