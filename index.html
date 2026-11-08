@@ -47,22 +47,41 @@
         }
     </script>
 
-<style>
-        
+    <style>
+        /* حاوية الفيديو الخلفي ليكون ثابتاً وواضحاً كلياً بدون تظليل */
+        .video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
 
+        .video-container video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
 
-
-
-
-
-
-
-    
-
-
-
-        
+        /* زجاج مخصص للخلفيات واللوحات لضمان وضوح المحتوى فوق الفيديو */
+        .glass-panel {
+            background: rgba(19, 27, 46, 0.88);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+    </style>
+</head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-neonCyan selection:text-black">
+
+    <!-- خلفية الفيديو d.mp4 -->
+    <div class="video-container">
+        <video autoplay muted loop playsinline id="bgVideo">
+            <source src="d.mp4" type="video/mp4">
+            متصفحك لا يدعم تشغيل الفيديو.
+        </video>
+    </div>
 
     <!-- Toast Notification -->
     <div id="toast" class="fixed bottom-6 left-6 z-50 transform translate-y-32 opacity-0 transition-all duration-300 ease-out bg-panelBg border border-neonCyan text-white px-5 py-3 rounded-xl shadow-neon-cyan flex items-center space-x-3 space-x-reverse">
@@ -70,7 +89,7 @@
         <span id="toastMsg" class="font-semibold text-sm">تم نسخ التقرير بنجاح!</span>
     </div>
 
-    <!-- Top Header Banner (المعدل بزر تحميل الألعاب المباشر) -->
+    <!-- Top Header Banner -->
     <header class="sticky top-0 z-40 glass-panel border-b border-panelBorder shadow-lg">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
             <!-- Logo -->
@@ -82,7 +101,7 @@
                     <h1 class="text-xl sm:text-2xl font-black tracking-wide text-white font-tajawal">
                         GAMES <span class="text-neonCyan">CEN</span><span class="text-neonGreen">TER</span>
                     </h1>
-                    <p class="text-xs text-gray-400 font-semibold">اكتشاف عنق الزجاجة</p>
+                    <p class="text-xs text-gray-300 font-semibold">اكتشاف عنق الزجاجة</p>
                 </div>
             </div>
 
@@ -100,7 +119,7 @@
     </header>
 
     <!-- Main Container -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full">
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full relative z-10">
 
         <!-- Intro Banner -->
         <div class="glass-panel p-6 sm:p-8 rounded-2xl mb-8 border border-panelBorder relative overflow-hidden">
@@ -115,18 +134,18 @@
                     <h2 class="text-2xl sm:text-4xl font-black text-white font-tajawal mb-3 leading-tight">
                         اكتشف قوة تجميعتك وتخلص من <span class="text-transparent bg-clip-text bg-gradient-to-l from-neonCyan via-emerald-400 to-neonGreen">عنق الزجاجة</span>
                     </h2>
-                    <p class="text-gray-300 text-sm sm:text-base leading-relaxed">
+                    <p class="text-gray-200 text-sm sm:text-base leading-relaxed">
                         اختر معالجك وكرت الشاشة ودقة الشاشة لتحصل على تحليل دقيق لنسبة عنق الزجاجة، استهلاك الطاقة، أداء الإطارات (FPS)، وتوافق القطع بالكامل مع توصيات التحديث المستقبلي.
                     </p>
                 </div>
                 <div class="flex flex-wrap gap-4 items-center justify-center">
-                    <div class="bg-panelBg/80 p-4 rounded-xl border border-panelBorder text-center min-w-[130px]">
+                    <div class="bg-panelBg/90 p-4 rounded-xl border border-panelBorder text-center min-w-[130px]">
                         <span class="block text-2xl font-black text-neonCyan font-tajawal" id="statCpuCount">0</span>
-                        <span class="text-xs text-gray-400">معالج معرف</span>
+                        <span class="text-xs text-gray-300">معالج معرف</span>
                     </div>
-                    <div class="bg-panelBg/80 p-4 rounded-xl border border-panelBorder text-center min-w-[130px]">
+                    <div class="bg-panelBg/90 p-4 rounded-xl border border-panelBorder text-center min-w-[130px]">
                         <span class="block text-2xl font-black text-neonGreen font-tajawal" id="statGpuCount">0</span>
-                        <span class="text-xs text-gray-400">كرت شاشة معرف</span>
+                        <span class="text-xs text-gray-300">كرت شاشة معرف</span>
                     </div>
                 </div>
             </div>
@@ -148,15 +167,15 @@
                         
                         <!-- CPU Selection -->
                         <div>
-                            <label class="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-2 flex justify-between">
+                            <label class="block text-xs font-bold text-gray-200 uppercase tracking-wider mb-2 flex justify-between">
                                 <span><i class="fa-solid fa-microchip text-neonCyan ml-1"></i> المعالج المركزى (CPU)</span>
-                                <span id="cpuScoreTag" class="text-neonCyan font-mono">--</span>
+                                <span id="cpuScoreTag" class="text-neonCyan font-mono font-bold">--</span>
                             </label>
                             <div class="relative">
-                                <select id="cpuSelect" class="w-full bg-darkBg border border-panelBorder rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-neonCyan transition-all appearance-none cursor-pointer">
+                                <select id="cpuSelect" class="w-full bg-darkBg/90 border border-panelBorder rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-neonCyan transition-all appearance-none cursor-pointer">
                                     <option value="" disabled selected>اختر المعالج...</option>
                                 </select>
-                                <div class="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                                <div class="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-300">
                                     <i class="fa-solid fa-chevron-down text-xs"></i>
                                 </div>
                             </div>
@@ -164,15 +183,15 @@
 
                         <!-- GPU Selection -->
                         <div>
-                            <label class="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-2 flex justify-between">
+                            <label class="block text-xs font-bold text-gray-200 uppercase tracking-wider mb-2 flex justify-between">
                                 <span><i class="fa-solid fa-display text-neonGreen ml-1"></i> كرت الشاشة (GPU)</span>
-                                <span id="gpuScoreTag" class="text-neonGreen font-mono">--</span>
+                                <span id="gpuScoreTag" class="text-neonGreen font-mono font-bold">--</span>
                             </label>
                             <div class="relative">
-                                <select id="gpuSelect" class="w-full bg-darkBg border border-panelBorder rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-neonGreen transition-all appearance-none cursor-pointer">
+                                <select id="gpuSelect" class="w-full bg-darkBg/90 border border-panelBorder rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-neonGreen transition-all appearance-none cursor-pointer">
                                     <option value="" disabled selected>اختر كرت الشاشة...</option>
                                 </select>
-                                <div class="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                                <div class="absolute left-4 top-1/2 -translate-y-1/2 pointer-events-none text-gray-300">
                                     <i class="fa-solid fa-chevron-down text-xs"></i>
                                 </div>
                             </div>
@@ -180,17 +199,17 @@
 
                         <!-- Resolution -->
                         <div>
-                            <label class="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-2">
+                            <label class="block text-xs font-bold text-gray-200 uppercase tracking-wider mb-2">
                                 <i class="fa-solid fa-expand text-neonYellow ml-1"></i> دقة الشاشة (Resolution)
                             </label>
                             <div class="grid grid-cols-3 gap-2">
                                 <button type="button" data-res="1080p" class="res-btn active bg-neonCyan text-black font-bold py-2.5 rounded-xl text-xs transition-all border border-neonCyan">
                                     1080p (FHD)
                                 </button>
-                                <button type="button" data-res="1440p" class="res-btn bg-darkBg border border-panelBorder text-gray-300 hover:border-gray-500 font-bold py-2.5 rounded-xl text-xs transition-all">
+                                <button type="button" data-res="1440p" class="res-btn bg-darkBg/90 border border-panelBorder text-gray-200 hover:border-gray-400 font-bold py-2.5 rounded-xl text-xs transition-all">
                                     1440p (2K)
                                 </button>
-                                <button type="button" data-res="4k" class="res-btn bg-darkBg border border-panelBorder text-gray-300 hover:border-gray-500 font-bold py-2.5 rounded-xl text-xs transition-all">
+                                <button type="button" data-res="4k" class="res-btn bg-darkBg/90 border border-panelBorder text-gray-200 hover:border-gray-400 font-bold py-2.5 rounded-xl text-xs transition-all">
                                     4K (Ultra HD)
                                 </button>
                             </div>
@@ -198,20 +217,20 @@
 
                         <!-- RAM Capacity -->
                         <div>
-                            <label class="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-2">
+                            <label class="block text-xs font-bold text-gray-200 uppercase tracking-wider mb-2">
                                 <i class="fa-solid fa-memory text-purple-400 ml-1"></i> سعة ذاكرة الرام (RAM)
                             </label>
                             <div class="grid grid-cols-4 gap-2">
-                                <button type="button" data-ram="8" class="ram-btn bg-darkBg border border-panelBorder text-gray-300 hover:border-gray-500 font-bold py-2 rounded-xl text-xs transition-all">
+                                <button type="button" data-ram="8" class="ram-btn bg-darkBg/90 border border-panelBorder text-gray-200 hover:border-gray-400 font-bold py-2 rounded-xl text-xs transition-all">
                                     8 GB
                                 </button>
                                 <button type="button" data-ram="16" class="ram-btn active bg-neonCyan text-black font-bold py-2 rounded-xl text-xs transition-all border border-neonCyan">
                                     16 GB
                                 </button>
-                                <button type="button" data-ram="32" class="ram-btn bg-darkBg border border-panelBorder text-gray-300 hover:border-gray-500 font-bold py-2 rounded-xl text-xs transition-all">
+                                <button type="button" data-ram="32" class="ram-btn bg-darkBg/90 border border-panelBorder text-gray-200 hover:border-gray-400 font-bold py-2 rounded-xl text-xs transition-all">
                                     32 GB
                                 </button>
-                                <button type="button" data-ram="64" class="ram-btn bg-darkBg border border-panelBorder text-gray-300 hover:border-gray-500 font-bold py-2 rounded-xl text-xs transition-all">
+                                <button type="button" data-ram="64" class="ram-btn bg-darkBg/90 border border-panelBorder text-gray-200 hover:border-gray-400 font-bold py-2 rounded-xl text-xs transition-all">
                                     64 GB
                                 </button>
                             </div>
@@ -219,10 +238,10 @@
 
                         <!-- Target Usage -->
                         <div>
-                            <label class="block text-xs font-bold text-gray-300 uppercase tracking-wider mb-2">
+                            <label class="block text-xs font-bold text-gray-200 uppercase tracking-wider mb-2">
                                 <i class="fa-solid fa-gamepad text-pink-500 ml-1"></i> الاستخدام الأساسي
                             </label>
-                            <select id="usageSelect" class="w-full bg-darkBg border border-panelBorder rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-neonCyan transition-all appearance-none cursor-pointer">
+                            <select id="usageSelect" class="w-full bg-darkBg/90 border border-panelBorder rounded-xl px-4 py-3 text-sm text-white focus:outline-none focus:border-neonCyan transition-all appearance-none cursor-pointer">
                                 <option value="gaming">ألعاب متقدمة (Pure Gaming)</option>
                                 <option value="streaming">ألعاب مع بث مباشر (Gaming & Streaming)</option>
                                 <option value="rendering">مونتاج وصناعة محتوى (Video Editing / 3D)</option>
@@ -273,15 +292,15 @@
 
                         <!-- Diagnostic Summary -->
                         <div class="flex-1 space-y-3 text-right w-full">
-                            <div class="bg-darkBg/70 p-4 rounded-xl border border-panelBorder">
-                                <span class="text-xs text-gray-400 block mb-1">الطرف المسبب للتقييد:</span>
+                            <div class="bg-darkBg/90 p-4 rounded-xl border border-panelBorder">
+                                <span class="text-xs text-gray-300 block mb-1">الطرف المسبب للتقييد:</span>
                                 <div id="bottleneckLimiter" class="text-base font-bold text-white flex items-center gap-2">
                                     <i class="fa-solid fa-check-circle text-neonGreen"></i>
                                     <span>لا يوجد عنق زجاجة ملموس</span>
                                 </div>
                             </div>
 
-                            <p id="bottleneckDesc" class="text-xs text-gray-300 leading-relaxed bg-panelBg/40 p-3.5 rounded-xl border border-panelBorder/50">
+                            <p id="bottleneckDesc" class="text-xs text-gray-200 leading-relaxed bg-panelBg/80 p-3.5 rounded-xl border border-panelBorder">
                                 التجميعة متناسقة بشكل ممتاز جداً. المعالج وكرت الشاشة يعملان بتناغم عالٍ دون أن يقيد أحدهما أداء الآخر في الدقة المختارة.
                             </p>
                         </div>
@@ -289,13 +308,13 @@
 
                     <!-- Visual Indicator Levels Bar -->
                     <div class="mt-6 pt-4 border-t border-panelBorder grid grid-cols-3 gap-2 text-center text-xs">
-                        <div class="p-2 rounded-lg bg-emerald-950/40 border border-emerald-500/30 text-emerald-400 font-semibold">
+                        <div class="p-2 rounded-lg bg-emerald-950/70 border border-emerald-500/30 text-emerald-300 font-semibold">
                             ممتاز (&lt; 10%)
                         </div>
-                        <div class="p-2 rounded-lg bg-amber-950/40 border border-amber-500/30 text-amber-400 font-semibold">
+                        <div class="p-2 rounded-lg bg-amber-950/70 border border-amber-500/30 text-amber-300 font-semibold">
                             متوسط (10% - 20%)
                         </div>
-                        <div class="p-2 rounded-lg bg-rose-950/40 border border-rose-500/30 text-rose-400 font-semibold">
+                        <div class="p-2 rounded-lg bg-rose-950/70 border border-rose-500/30 text-rose-300 font-semibold">
                             عالي (&gt; 20%)
                         </div>
                     </div>
@@ -306,12 +325,12 @@
                 <div class="glass-panel rounded-2xl border border-panelBorder shadow-xl overflow-hidden">
                     
                     <!-- Tab Buttons Header -->
-                    <div class="flex border-b border-panelBorder bg-darkBg/60">
+                    <div class="flex border-b border-panelBorder bg-darkBg/80">
                         <button id="tabBtnFps" class="flex-1 py-3.5 px-4 text-xs sm:text-sm font-bold text-neonCyan border-b-2 border-neonCyan transition-all flex items-center justify-center gap-2">
                             <i class="fa-solid fa-gamepad"></i>
                             <span>معدل الإطارات المتوقع (FPS)</span>
                         </button>
-                        <button id="tabBtnCompat" class="flex-1 py-3.5 px-4 text-xs sm:text-sm font-bold text-gray-400 hover:text-white transition-all flex items-center justify-center gap-2">
+                        <button id="tabBtnCompat" class="flex-1 py-3.5 px-4 text-xs sm:text-sm font-bold text-gray-300 hover:text-white transition-all flex items-center justify-center gap-2">
                             <i class="fa-solid fa-shield-halved"></i>
                             <span>فحص التوافق والطاقة</span>
                         </button>
@@ -323,28 +342,28 @@
                         <!-- TAB 1: FPS Benchmarks -->
                         <div id="tabContentFps" class="space-y-6">
                             <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                                <div class="bg-darkBg p-4 rounded-xl border border-panelBorder text-center">
+                                <div class="bg-darkBg/90 p-4 rounded-xl border border-panelBorder text-center">
                                     <i class="fa-solid fa-crosshair text-neonCyan text-xl mb-2"></i>
-                                    <span class="block text-xs text-gray-400 mb-1">ألعاب التنافس والمواجهات (eSports)</span>
+                                    <span class="block text-xs text-gray-300 mb-1">ألعاب التنافس والمواجهات (eSports)</span>
                                     <span id="fpsEsports" class="text-2xl font-black text-white font-tajawal">-- FPS</span>
-                                    <span class="block text-[10px] text-gray-500 mt-1">مثال: CS2, Valorant, Apex</span>
+                                    <span class="block text-[10px] text-gray-400 mt-1">مثال: CS2, Valorant, Apex</span>
                                 </div>
-                                <div class="bg-darkBg p-4 rounded-xl border border-panelBorder text-center">
+                                <div class="bg-darkBg/90 p-4 rounded-xl border border-panelBorder text-center">
                                     <i class="fa-solid fa-mountain-sun text-neonGreen text-xl mb-2"></i>
-                                    <span class="block text-xs text-gray-400 mb-1">ألعاب العالم المفتوح (AAA)</span>
+                                    <span class="block text-xs text-gray-300 mb-1">ألعاب العالم المفتوح (AAA)</span>
                                     <span id="fpsAAA" class="text-2xl font-black text-white font-tajawal">-- FPS</span>
-                                    <span class="block text-[10px] text-gray-500 mt-1">مثال: GTA V, Cyberpunk, Witcher</span>
+                                    <span class="block text-[10px] text-gray-400 mt-1">مثال: GTA V, Cyberpunk, Witcher</span>
                                 </div>
-                                <div class="bg-darkBg p-4 rounded-xl border border-panelBorder text-center">
+                                <div class="bg-darkBg/90 p-4 rounded-xl border border-panelBorder text-center">
                                     <i class="fa-solid fa-wand-magic text-neonYellow text-xl mb-2"></i>
-                                    <span class="block text-xs text-gray-400 mb-1">ألعاب محرك تتبع الأشعة (Ray Tracing)</span>
+                                    <span class="block text-xs text-gray-300 mb-1">ألعاب محرك تتبع الأشعة (Ray Tracing)</span>
                                     <span id="fpsRayTracing" class="text-2xl font-black text-white font-tajawal">-- FPS</span>
-                                    <span class="block text-[10px] text-gray-500 mt-1">إعدادات مرتفعة Ultra</span>
+                                    <span class="block text-[10px] text-gray-400 mt-1">إعدادات مرتفعة Ultra</span>
                                 </div>
                             </div>
 
-                            <div class="bg-darkBg/60 p-4 rounded-xl border border-panelBorder">
-                                <h4 class="text-xs font-bold text-gray-300 mb-3 flex items-center gap-2">
+                            <div class="bg-darkBg/90 p-4 rounded-xl border border-panelBorder">
+                                <h4 class="text-xs font-bold text-gray-200 mb-3 flex items-center gap-2">
                                     <i class="fa-solid fa-chart-simple text-neonCyan"></i>
                                     <span>مقارنة أداء الإطارات عبر الدقات المختلفة</span>
                                 </h4>
@@ -356,50 +375,50 @@
 
                         <!-- TAB 2: Hardware Compatibility Check -->
                         <div id="tabContentCompat" class="hidden space-y-4">
-                            <div class="bg-darkBg p-4 rounded-xl border border-panelBorder flex items-center justify-between">
+                            <div class="bg-darkBg/90 p-4 rounded-xl border border-panelBorder flex items-center justify-between">
                                 <div class="flex items-center space-x-3 space-x-reverse">
                                     <div class="w-10 h-10 rounded-lg bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400">
                                         <i class="fa-solid fa-plug text-lg"></i>
                                     </div>
                                     <div>
-                                        <span class="block text-xs text-gray-400">مزود الطاقة المقترح (PSU Wattage)</span>
+                                        <span class="block text-xs text-gray-300">مزود الطاقة المقترح (PSU Wattage)</span>
                                         <span id="psuWattage" class="text-sm font-bold text-white">-- Watt</span>
                                     </div>
                                 </div>
                                 <span id="psuStatusBadge" class="bg-emerald-950 text-emerald-400 text-xs px-3 py-1 rounded-full font-bold">آمن جداً</span>
                             </div>
 
-                            <div class="bg-darkBg p-4 rounded-xl border border-panelBorder flex items-center justify-between">
+                            <div class="bg-darkBg/90 p-4 rounded-xl border border-panelBorder flex items-center justify-between">
                                 <div class="flex items-center space-x-3 space-x-reverse">
                                     <div class="w-10 h-10 rounded-lg bg-cyan-500/10 border border-cyan-500/30 flex items-center justify-center text-cyan-400">
                                         <i class="fa-solid fa-network-wired text-lg"></i>
                                     </div>
                                     <div>
-                                        <span class="block text-xs text-gray-400">منفذ كرت الشاشة (PCIe Express)</span>
+                                        <span class="block text-xs text-gray-300">منفذ كرت الشاشة (PCIe Express)</span>
                                         <span id="pcieStatus" class="text-sm font-bold text-white">متوافق بالكامل (PCIe 4.0/5.0)</span>
                                     </div>
                                 </div>
                                 <i class="fa-solid fa-circle-check text-neonGreen text-lg"></i>
                             </div>
 
-                            <div class="bg-darkBg p-4 rounded-xl border border-panelBorder flex items-center justify-between">
+                            <div class="bg-darkBg/90 p-4 rounded-xl border border-panelBorder flex items-center justify-between">
                                 <div class="flex items-center space-x-3 space-x-reverse">
                                     <div class="w-10 h-10 rounded-lg bg-purple-500/10 border border-purple-500/30 flex items-center justify-center text-purple-400">
                                         <i class="fa-solid fa-memory text-lg"></i>
                                     </div>
                                     <div>
-                                        <span class="block text-xs text-gray-400">كفاية ذاكرة الرام للمهام</span>
+                                        <span class="block text-xs text-gray-300">كفاية ذاكرة الرام للمهام</span>
                                         <span id="ramCheckStatus" class="text-sm font-bold text-white">ممتازة ومناسبة للألعاب الحديثة</span>
                                     </div>
                                 </div>
                                 <i id="ramCheckIcon" class="fa-solid fa-circle-check text-neonGreen text-lg"></i>
                             </div>
 
-                            <div class="bg-panelBg/70 p-4 rounded-xl border border-panelBorder">
+                            <div class="bg-panelBg/90 p-4 rounded-xl border border-panelBorder">
                                 <h4 class="text-xs font-bold text-neonYellow mb-2 flex items-center gap-1.5">
                                     <i class="fa-solid fa-lightbulb"></i> نصيحة التحديث والتطوير:
                                 </h4>
-                                <p id="upgradeAdviceText" class="text-xs text-gray-300 leading-relaxed">
+                                <p id="upgradeAdviceText" class="text-xs text-gray-200 leading-relaxed">
                                     التجميعة متكاملة وممتازة، ولا تحتاج لتحديث قريب للقطع الحالية.
                                 </p>
                             </div>
@@ -415,10 +434,10 @@
     </main>
 
     <!-- Footer -->
-    <footer class="border-t border-panelBorder glass-panel mt-12 py-6">
-        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-gray-400 flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p>جميع الحقوق محفوظة &copy; 2026 |GAMES CENTER</p>
-            <div class="flex items-center space-x-4 space-x-reverse text-gray-400">
+    <footer class="border-t border-panelBorder glass-panel mt-12 py-6 relative z-10">
+        <div class="max-w-7xl mx-auto px-4 text-center text-xs text-gray-300 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <p>جميع الحقوق محفوظة &copy; 2026 | GAMES CENTER</p>
+            <div class="flex items-center space-x-4 space-x-reverse text-gray-300">
                 <span class="hover:text-neonCyan transition-colors cursor-pointer" onclick="alert('تم حساب النتائج عبر خوارزميات قياس الأداء المعتمدة بناءً على اختبارات الألعاب الواقعية 2026.');"><i class="fa-solid fa-circle-info ml-1"></i> حول الحاسبة</span>
             </div>
         </div>
@@ -533,10 +552,10 @@
                 btn.addEventListener('click', (e) => {
                     document.querySelectorAll('.res-btn').forEach(b => {
                         b.classList.remove('active', 'bg-neonCyan', 'text-black', 'border-neonCyan');
-                        b.classList.add('bg-darkBg', 'text-gray-300', 'border-panelBorder');
+                        b.classList.add('bg-darkBg/90', 'text-gray-200', 'border-panelBorder');
                     });
                     btn.classList.add('active', 'bg-neonCyan', 'text-black', 'border-neonCyan');
-                    btn.classList.remove('bg-darkBg', 'text-gray-300', 'border-panelBorder');
+                    btn.classList.remove('bg-darkBg/90', 'text-gray-200', 'border-panelBorder');
                     
                     selectedResolution = btn.getAttribute('data-res');
                     calculateAll();
@@ -547,10 +566,10 @@
                 btn.addEventListener('click', (e) => {
                     document.querySelectorAll('.ram-btn').forEach(b => {
                         b.classList.remove('active', 'bg-neonCyan', 'text-black', 'border-neonCyan');
-                        b.classList.add('bg-darkBg', 'text-gray-300', 'border-panelBorder');
+                        b.classList.add('bg-darkBg/90', 'text-gray-200', 'border-panelBorder');
                     });
                     btn.classList.add('active', 'bg-neonCyan', 'text-black', 'border-neonCyan');
-                    btn.classList.remove('bg-darkBg', 'text-gray-300', 'border-panelBorder');
+                    btn.classList.remove('bg-darkBg/90', 'text-gray-200', 'border-panelBorder');
                     
                     selectedRam = parseInt(btn.getAttribute('data-ram'));
                     calculateAll();
@@ -571,14 +590,14 @@
 
             tabBtnFps.addEventListener('click', () => {
                 tabBtnFps.className = "flex-1 py-3.5 px-4 text-xs sm:text-sm font-bold text-neonCyan border-b-2 border-neonCyan transition-all flex items-center justify-center gap-2";
-                tabBtnCompat.className = "flex-1 py-3.5 px-4 text-xs sm:text-sm font-bold text-gray-400 hover:text-white transition-all flex items-center justify-center gap-2";
+                tabBtnCompat.className = "flex-1 py-3.5 px-4 text-xs sm:text-sm font-bold text-gray-300 hover:text-white transition-all flex items-center justify-center gap-2";
                 tabContentFps.classList.remove('hidden');
                 tabContentCompat.classList.add('hidden');
             });
 
             tabBtnCompat.addEventListener('click', () => {
                 tabBtnCompat.className = "flex-1 py-3.5 px-4 text-xs sm:text-sm font-bold text-neonCyan border-b-2 border-neonCyan transition-all flex items-center justify-center gap-2";
-                tabBtnFps.className = "flex-1 py-3.5 px-4 text-xs sm:text-sm font-bold text-gray-400 hover:text-white transition-all flex items-center justify-center gap-2";
+                tabBtnFps.className = "flex-1 py-3.5 px-4 text-xs sm:text-sm font-bold text-gray-300 hover:text-white transition-all flex items-center justify-center gap-2";
                 tabContentCompat.classList.remove('hidden');
                 tabContentFps.classList.add('hidden');
             });
@@ -744,11 +763,11 @@
                         y: {
                             beginAtZero: true,
                             grid: { color: '#1f2b48' },
-                            ticks: { color: '#94a3b8', font: { family: 'Cairo' } }
+                            ticks: { color: '#cbd5e1', font: { family: 'Cairo' } }
                         },
                         x: {
                             grid: { display: false },
-                            ticks: { color: '#94a3b8', font: { family: 'Cairo' } }
+                            ticks: { color: '#cbd5e1', font: { family: 'Cairo' } }
                         }
                     }
                 }
