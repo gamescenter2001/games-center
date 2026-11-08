@@ -49,36 +49,50 @@
 
     <style>
         body {
-            background-image: linear-gradient(rgba(18, 18, 18, 0.8), rgba(18, 18, 18, 0.85)), url('x.jpg');
-            background-size: cover;
-            background-position: center center;
-            background-repeat: no-repeat;
-            background-attachment: scroll;
-            background-color: #0d0e12;
-            font-family: 'Cairo', sans-serif;
-            color: #f1f5f9;
-            overflow-x: hidden;
-        }
-        
-        .glow-text-cyan { text-shadow: 0 0 10px rgba(0, 229, 255, 0.6); }
-        .glow-text-green { text-shadow: 0 0 10px rgba(0, 255, 136, 0.6); }
-        .glow-border { box-shadow: 0 0 15px rgba(0, 229, 255, 0.2); }
-        
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #0b0f19; }
-        ::-webkit-scrollbar-thumb { background: #1f2b48; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #00e5ff; }
+        margin: 0;
+        padding: 0;
+        min-height: 100vh;
+        font-family: 'Cairo', sans-serif;
+        color: #f1f5f9;
+        /* خلفية نيون زرقاء وحمراء داكنة وساطعة تضمن عدم السواد الكامل */
+        background: radial-gradient(circle at 20% 30%, rgba(0, 229, 255, 0.25) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 70%, rgba(255, 42, 109, 0.25) 0%, transparent 50%),
+                    #0b0f19;
+        background-attachment: fixed;
+        position: relative;
+    }
 
-        .gauge-cover {
-            transform: rotate(-90deg);
-            transform-origin: center;
-        }
+    /* خطوط نيون أفقية واضحة جداً ومضمونة الظهور */
+    .neon-line-top {
+        position: fixed;
+        top: 30%;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: linear-gradient(90deg, transparent, #00e5ff, transparent);
+        box-shadow: 0 0 20px #00e5ff, 0 0 40px #00e5ff;
+        z-index: 1;
+    }
 
-        .glass-panel {
-            background: rgba(19, 27, 46, 0.85);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(31, 43, 72, 0.8);
-        }
+    .neon-line-bottom {
+        position: fixed;
+        top: 70%;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background: linear-gradient(90deg, transparent, #ff2a6d, transparent);
+        box-shadow: 0 0 20px #ff2a6d, 0 0 40px #ff2a6d;
+        z-index: 1;
+    }
+
+
+<body>
+    <div class="neon-line-top"></div>
+    <div class="neon-line-bottom"></div>
+
+    <!-- باقي محتوى موقعك هنا -->
+</body>
+
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between selection:bg-neonCyan selection:text-black">
